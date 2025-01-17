@@ -1,10 +1,10 @@
 // script.js
-const block = document.getElementById('block');
-const gridContainer = document.getElementById('gridContainer');
+const block = document.getElementById("block");
+const gridContainer = document.getElementById("gridContainer");
 const blockSize = 50; // Size of each block in pixels
+const moveSound = document.getElementById("moveSound"); // Audio element
 let posX = 0; // Initial X position
 let posY = 0; // Initial Y position
-
 
 // Create the grid dynamically
 function createGrid() {
@@ -17,8 +17,8 @@ function createGrid() {
   gridContainer.style.gridTemplateRows = `repeat(${rows}, ${blockSize}px)`;
 
   for (let i = 0; i < columns * rows; i++) {
-    const cell = document.createElement('div');
-    cell.classList.add('grid-cell');
+    const cell = document.createElement("div");
+    cell.classList.add("grid-cell");
     gridContainer.appendChild(cell);
   }
 }
@@ -39,26 +39,48 @@ function centerBlock() {
 // Move the block based on keyboard input
 function moveBlock(event) {
   const step = blockSize; // Move by one block size
+  let moved = false; // Flag to check if the block moved
 
   switch (event.key) {
-    case 'ArrowUp':
-      posY = Math.max(posY - step, 0);
+    case "ArrowUp":
+      if (posY - step >= 0) {
+        posY -= step;
+        moved = true;
+      }
       break;
-    case 'ArrowDown':
-      posY = Math.min(posY + step, window.innerHeight - blockSize);
+    case "ArrowDown":
+      if (posY + step <= window.innerHeight - blockSize) {
+        posY += step;
+        moved = true;
+      }
       break;
-    case 'ArrowLeft':
-      posX = Math.max(posX - step, 0);
+    case "ArrowLeft":
+      if (posX - step >= 0) {
+        posX -= step;
+        moved = true;
+      }
       break;
-    case 'ArrowRight':
-      posX = Math.min(posX + step, window.innerWidth - blockSize);
+    case "ArrowRight":
+      if (posX + step <= window.innerWidth - blockSize) {
+        posX += step;
+        moved = true;
+      }
       break;
   }
 
-  block.style.transform = `translate(${posX}px, ${posY}px)`;
+  if (moved) {
+    block.style.transform = `translate(${posX}px, ${posY}px)`;
+    playMoveSound(); // Play the sound effect
+  }
+}
+
+// Play the move sound effect
+function playMoveSound() {
+  moveSound.currentTime = 0; // Rewind the sound to the start
+  moveSound.play(); // Play the sound
 }
 
 // Initialize the grid, center the block, and add event listener
 createGrid();
 centerBlock();
-window.addEventListener('keydown', moveBlock);
+window.addEventListener("keydown", moveBlock);

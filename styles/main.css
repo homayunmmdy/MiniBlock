@@ -34,4 +34,7 @@ html {
   background-color: #c58c85;
   position: absolute;
   transition: all 0.1s ease;
+  background-image: url('../assets/images/user.jpg');
+  background-position: center;
+  background-size: cover;
 }
