@@ -7,6 +7,9 @@ class GridGame {
     this.moveSound = document.getElementById("moveSound"); // Audio element
     this.posX = 0; // Initial X position
     this.posY = 0; // Initial Y position
+    this.touchStartX = 0; // Initial touch X position
+    this.touchStartY = 0; // Initial touch Y position
+    this.isDragging = false; // Flag to check if the block is being dragged
 
     this.init();
   }
@@ -14,7 +17,7 @@ class GridGame {
   init() {
     this.createGrid();
     this.centerBlock();
-    window.addEventListener("keydown", (event) => this.moveBlock(event));
+    this.addEventListeners();
   }
 
   createGrid() {
@@ -43,6 +46,16 @@ class GridGame {
 
     // Set the block's initial position
     this.block.style.transform = `translate(${this.posX}px, ${this.posY}px)`;
+  }
+
+  addEventListeners() {
+    // Keyboard event listener
+    window.addEventListener("keydown", (event) => this.moveBlock(event));
+
+    // Touch event listeners
+    this.block.addEventListener("touchstart", (event) => this.handleTouchStart(event));
+    this.block.addEventListener("touchmove", (event) => this.handleTouchMove(event));
+    this.block.addEventListener("touchend", () => this.handleTouchEnd());
   }
 
   moveBlock(event) {
@@ -77,9 +90,52 @@ class GridGame {
     }
 
     if (moved) {
-      this.block.style.transform = `translate(${this.posX}px, ${this.posY}px)`;
+      this.updateBlockPosition();
       this.playMoveSound(); // Play the sound effect
     }
+  }
+
+  handleTouchStart(event) {
+    // Get the initial touch position
+    this.touchStartX = event.touches[0].clientX;
+    this.touchStartY = event.touches[0].clientY;
+    this.isDragging = true;
+  }
+
+  handleTouchMove(event) {
+    if (!this.isDragging) return;
+
+    // Calculate the new position based on touch movement
+    const touchX = event.touches[0].clientX;
+    const touchY = event.touches[0].clientY;
+    const deltaX = touchX - this.touchStartX;
+    const deltaY = touchY - this.touchStartY;
+
+    // Update the block's position
+    this.posX += deltaX;
+    this.posY += deltaY;
+
+    // Constrain the block within the screen boundaries
+    this.posX = Math.max(0, Math.min(window.innerWidth - this.blockSize, this.posX));
+    this.posY = Math.max(0, Math.min(window.innerHeight - this.blockSize, this.posY));
+
+    // Update the block's position on the screen
+    this.updateBlockPosition();
+
+    // Update the initial touch position for the next move
+    this.touchStartX = touchX;
+    this.touchStartY = touchY;
+
+    // Play the move sound effect
+    this.playMoveSound();
+  }
+
+  handleTouchEnd() {
+    this.isDragging = false;
+  }
+
+  updateBlockPosition() {
+    this.block.style.transform = `translate(${this.posX}px, ${this.posY}px)`;
   }
 
   playMoveSound() {
