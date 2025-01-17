@@ -4,12 +4,15 @@ class GridGame {
     this.block = document.getElementById("block");
     this.gridContainer = document.getElementById("gridContainer");
     this.blockSize = 50; // Size of each block in pixels
-    this.moveSound = document.getElementById("moveSound"); // Audio element
+    this.moveSound = document.getElementById("moveSound"); // Audio element for movement
+    this.grassChangeSound = document.getElementById("grassChangeSound"); // Audio element for image change
     this.posX = 0; // Initial X position
     this.posY = 0; // Initial Y position
     this.touchStartX = 0; // Initial touch X position
     this.touchStartY = 0; // Initial touch Y position
     this.isDragging = false; // Flag to check if the block is being dragged
+
+    this.cellImage = "./assets/images/dirt.jpg"; // Replace with your image path
 
     this.init();
   }
@@ -23,17 +26,30 @@ class GridGame {
   createGrid() {
     const screenWidth = window.innerWidth;
     const screenHeight = window.innerHeight;
-    const columns = Math.floor(screenWidth / this.blockSize);
-    const rows = Math.floor(screenHeight / this.blockSize);
 
+    // Calculate the number of columns and rows, rounding up to ensure full coverage
+    const columns = Math.ceil(screenWidth / this.blockSize);
+    const rows = Math.ceil(screenHeight / this.blockSize);
+
+    // Set the grid template columns and rows
     this.gridContainer.style.gridTemplateColumns = `repeat(${columns}, ${this.blockSize}px)`;
     this.gridContainer.style.gridTemplateRows = `repeat(${rows}, ${this.blockSize}px)`;
 
+    // Create the grid cells
     for (let i = 0; i < columns * rows; i++) {
       const cell = document.createElement("div");
       cell.classList.add("grid-cell");
+
+      // Add click and touch event listeners to each cell
+      cell.addEventListener("click", () => this.changeCellImage(cell));
+      cell.addEventListener("touchstart", () => this.changeCellImage(cell));
+
       this.gridContainer.appendChild(cell);
     }
+
+    // Ensure the grid container covers the entire screen
+    this.gridContainer.style.width = `${columns * this.blockSize}px`;
+    this.gridContainer.style.height = `${rows * this.blockSize}px`;
   }
 
   centerBlock() {
@@ -52,7 +68,7 @@ class GridGame {
     // Keyboard event listener
     window.addEventListener("keydown", (event) => this.moveBlock(event));
 
-    // Touch event listeners
+    // Touch event listeners for dragging
     this.block.addEventListener("touchstart", (event) => this.handleTouchStart(event));
     this.block.addEventListener("touchmove", (event) => this.handleTouchMove(event));
     this.block.addEventListener("touchend", () => this.handleTouchEnd());
@@ -91,7 +107,7 @@ class GridGame {
 
     if (moved) {
       this.updateBlockPosition();
-      this.playMoveSound(); // Play the sound effect
+      this.playMoveSound(); // Play the move sound effect
     }
   }
 
@@ -141,6 +157,22 @@ class GridGame {
   playMoveSound() {
     this.moveSound.currentTime = 0; // Rewind the sound to the start
     this.moveSound.play(); // Play the sound
+  }
+
+  // Change the image of the clicked/touched cell
+  changeCellImage(cell) {
+    // Apply the single image to the cell
+    cell.style.backgroundImage = `url(${this.cellImage})`;
+    cell.style.backgroundSize = "cover"; // Ensure the image fits the cell
+
+    // Play the image change sound effect
+    this.playImageChangeSound();
+  }
+
+  // Play the image change sound effect
+  playImageChangeSound() {
+    this.grassChangeSound.currentTime = 0; // Rewind the sound to the start
+    this.grassChangeSound.play(); // Play the sound
   }
 }
 
