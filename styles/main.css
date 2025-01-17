@@ -1,12 +1,37 @@
 /* reset defualt browser styles */
 
 * {
-    margin: 0px;
-    padding: 0px;
-    box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
 }
 
+body,
+html {
+  height: 100%;
+  overflow: hidden;
+}
 
 :root {
-    --green : #7BB369;
+  --green: #7bb369;
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+  grid-template-rows: repeat(auto-fill, minmax(50px, 1fr));
+  width: 100%;
+  height: 100vh;
+  background-color: var(--green);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.block {
+  width: 50px;
+  height: 50px;
+  background-color: #c58c85;
+  position: absolute;
+  transition: all 0.1s ease;
 }
