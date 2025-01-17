@@ -13,6 +13,7 @@ class GridGame {
     this.isDragging = false; // Flag to check if the block is being dragged
 
     this.cellImage = "./assets/images/dirt.jpg"; // Replace with your image path
+    this.defaultCellImage = "./assets/images/grass.webp"; // Replace with your default image path
 
     this.init();
   }
@@ -69,8 +70,12 @@ class GridGame {
     window.addEventListener("keydown", (event) => this.moveBlock(event));
 
     // Touch event listeners for dragging
-    this.block.addEventListener("touchstart", (event) => this.handleTouchStart(event));
-    this.block.addEventListener("touchmove", (event) => this.handleTouchMove(event));
+    this.block.addEventListener("touchstart", (event) =>
+      this.handleTouchStart(event)
+    );
+    this.block.addEventListener("touchmove", (event) =>
+      this.handleTouchMove(event)
+    );
     this.block.addEventListener("touchend", () => this.handleTouchEnd());
   }
 
@@ -132,8 +137,14 @@ class GridGame {
     this.posY += deltaY;
 
     // Constrain the block within the screen boundaries
-    this.posX = Math.max(0, Math.min(window.innerWidth - this.blockSize, this.posX));
-    this.posY = Math.max(0, Math.min(window.innerHeight - this.blockSize, this.posY));
+    this.posX = Math.max(
+      0,
+      Math.min(window.innerWidth - this.blockSize, this.posX)
+    );
+    this.posY = Math.max(
+      0,
+      Math.min(window.innerHeight - this.blockSize, this.posY)
+    );
 
     // Update the block's position on the screen
     this.updateBlockPosition();
@@ -167,6 +178,10 @@ class GridGame {
 
     // Play the image change sound effect
     this.playImageChangeSound();
+
+    setTimeout(() => {
+      cell.style.backgroundImage = `url(${this.defaultCellImage})`;
+    }, 60000); // 60,000 milliseconds = 1 minute
   }
 
   // Play the image change sound effect
