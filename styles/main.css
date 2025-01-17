@@ -1,0 +1,12 @@
+/* reset defualt browser styles */
+
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+
+:root {
+    --green : #7BB369;
+}

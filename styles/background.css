@@ -1,0 +1,8 @@
+@import url("./main.css"); 
+
+.mainGround {
+    background-color: var(--green);
+    display: block;
+    width: 100%;
+    height: 100vh;
+}
