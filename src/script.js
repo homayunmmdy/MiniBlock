@@ -1,86 +1,92 @@
 // script.js
-const block = document.getElementById("block");
-const gridContainer = document.getElementById("gridContainer");
-const blockSize = 50; // Size of each block in pixels
-const moveSound = document.getElementById("moveSound"); // Audio element
-let posX = 0; // Initial X position
-let posY = 0; // Initial Y position
+class GridGame {
+  constructor() {
+    this.block = document.getElementById("block");
+    this.gridContainer = document.getElementById("gridContainer");
+    this.blockSize = 50; // Size of each block in pixels
+    this.moveSound = document.getElementById("moveSound"); // Audio element
+    this.posX = 0; // Initial X position
+    this.posY = 0; // Initial Y position
 
-// Create the grid dynamically
-function createGrid() {
-  const screenWidth = window.innerWidth;
-  const screenHeight = window.innerHeight;
-  const columns = Math.floor(screenWidth / blockSize);
-  const rows = Math.floor(screenHeight / blockSize);
+    this.init();
+  }
 
-  gridContainer.style.gridTemplateColumns = `repeat(${columns}, ${blockSize}px)`;
-  gridContainer.style.gridTemplateRows = `repeat(${rows}, ${blockSize}px)`;
+  init() {
+    this.createGrid();
+    this.centerBlock();
+    window.addEventListener("keydown", (event) => this.moveBlock(event));
+  }
 
-  for (let i = 0; i < columns * rows; i++) {
-    const cell = document.createElement("div");
-    cell.classList.add("grid-cell");
-    gridContainer.appendChild(cell);
+  createGrid() {
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+    const columns = Math.floor(screenWidth / this.blockSize);
+    const rows = Math.floor(screenHeight / this.blockSize);
+
+    this.gridContainer.style.gridTemplateColumns = `repeat(${columns}, ${this.blockSize}px)`;
+    this.gridContainer.style.gridTemplateRows = `repeat(${rows}, ${this.blockSize}px)`;
+
+    for (let i = 0; i < columns * rows; i++) {
+      const cell = document.createElement("div");
+      cell.classList.add("grid-cell");
+      this.gridContainer.appendChild(cell);
+    }
+  }
+
+  centerBlock() {
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+
+    // Calculate the center position
+    this.posX = Math.floor((screenWidth - this.blockSize) / 2);
+    this.posY = Math.floor((screenHeight - this.blockSize) / 2);
+
+    // Set the block's initial position
+    this.block.style.transform = `translate(${this.posX}px, ${this.posY}px)`;
+  }
+
+  moveBlock(event) {
+    const step = this.blockSize; // Move by one block size
+    let moved = false; // Flag to check if the block moved
+
+    switch (event.key) {
+      case "ArrowUp":
+        if (this.posY - step >= 0) {
+          this.posY -= step;
+          moved = true;
+        }
+        break;
+      case "ArrowDown":
+        if (this.posY + step <= window.innerHeight - this.blockSize) {
+          this.posY += step;
+          moved = true;
+        }
+        break;
+      case "ArrowLeft":
+        if (this.posX - step >= 0) {
+          this.posX -= step;
+          moved = true;
+        }
+        break;
+      case "ArrowRight":
+        if (this.posX + step <= window.innerWidth - this.blockSize) {
+          this.posX += step;
+          moved = true;
+        }
+        break;
+    }
+
+    if (moved) {
+      this.block.style.transform = `translate(${this.posX}px, ${this.posY}px)`;
+      this.playMoveSound(); // Play the sound effect
+    }
+  }
+
+  playMoveSound() {
+    this.moveSound.currentTime = 0; // Rewind the sound to the start
+    this.moveSound.play(); // Play the sound
   }
 }
 
-// Center the block on the screen
-function centerBlock() {
-  const screenWidth = window.innerWidth;
-  const screenHeight = window.innerHeight;
-
-  // Calculate the center position
-  posX = Math.floor((screenWidth - blockSize) / 2);
-  posY = Math.floor((screenHeight - blockSize) / 2);
-
-  // Set the block's initial position
-  block.style.transform = `translate(${posX}px, ${posY}px)`;
-}
-
-// Move the block based on keyboard input
-function moveBlock(event) {
-  const step = blockSize; // Move by one block size
-  let moved = false; // Flag to check if the block moved
-
-  switch (event.key) {
-    case "ArrowUp":
-      if (posY - step >= 0) {
-        posY -= step;
-        moved = true;
-      }
-      break;
-    case "ArrowDown":
-      if (posY + step <= window.innerHeight - blockSize) {
-        posY += step;
-        moved = true;
-      }
-      break;
-    case "ArrowLeft":
-      if (posX - step >= 0) {
-        posX -= step;
-        moved = true;
-      }
-      break;
-    case "ArrowRight":
-      if (posX + step <= window.innerWidth - blockSize) {
-        posX += step;
-        moved = true;
-      }
-      break;
-  }
-
-  if (moved) {
-    block.style.transform = `translate(${posX}px, ${posY}px)`;
-    playMoveSound(); // Play the sound effect
-  }
-}
-
-// Play the move sound effect
-function playMoveSound() {
-  moveSound.currentTime = 0; // Rewind the sound to the start
-  moveSound.play(); // Play the sound
-}
-
-// Initialize the grid, center the block, and add event listener
-createGrid();
-centerBlock();
-window.addEventListener("keydown", moveBlock);
+// Initialize the game
+const gridGame = new GridGame();
