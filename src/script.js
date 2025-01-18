@@ -1,4 +1,4 @@
-// script.js
+
 class GridGame {
   constructor() {
     this.block = document.getElementById("block");
@@ -6,190 +6,138 @@ class GridGame {
     this.blockSize = 50; // Size of each block in pixels
     this.moveSound = document.getElementById("moveSound"); // Audio element for movement
     this.grassChangeSound = document.getElementById("grassChangeSound"); // Audio element for image change
-    this.posX = 0; // Initial X position
-    this.posY = 0; // Initial Y position
-    this.touchStartX = 0; // Initial touch X position
-    this.touchStartY = 0; // Initial touch Y position
-    this.isDragging = false; // Flag to check if the block is being dragged
-
     this.cellImage = "./assets/images/dirt.jpg"; // Replace with your image path
     this.defaultCellImage = "./assets/images/grass.webp"; // Replace with your default image path
+
+    // Grid configuration and position tracking
+    this.grid = new Map(); // Stores the state of each cell by coordinate
+    this.posX = 0; // Initial block position X
+    this.posY = 0; // Initial block position Y
 
     this.init();
   }
 
   init() {
-    this.createGrid();
+    this.createGrid(20, 20); // Create initial grid of 20x20 cells
     this.centerBlock();
     this.addEventListeners();
   }
 
-  createGrid() {
-    const screenWidth = window.innerWidth;
-    const screenHeight = window.innerHeight;
+  createGrid(rows, cols) {
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
+        const key = `${row},${col}`;
+        if (!this.grid.has(key)) {
+          this.grid.set(key, { image: this.defaultCellImage });
+          const cell = document.createElement("div");
+          cell.classList.add("grid-cell");
+          cell.style.gridRowStart = row + 1;
+          cell.style.gridColumnStart = col + 1;
+          cell.style.backgroundImage = `url(${this.defaultCellImage})`;
 
-    // Calculate the number of columns and rows, rounding up to ensure full coverage
-    const columns = Math.ceil(screenWidth / this.blockSize);
-    const rows = Math.ceil(screenHeight / this.blockSize);
-
-    // Set the grid template columns and rows
-    this.gridContainer.style.gridTemplateColumns = `repeat(${columns}, ${this.blockSize}px)`;
-    this.gridContainer.style.gridTemplateRows = `repeat(${rows}, ${this.blockSize}px)`;
-
-    // Create the grid cells
-    for (let i = 0; i < columns * rows; i++) {
-      const cell = document.createElement("div");
-      cell.classList.add("grid-cell");
-
-      // Add click and touch event listeners to each cell
-      cell.addEventListener("click", () => this.changeCellImage(cell));
-      cell.addEventListener("touchstart", () => this.changeCellImage(cell));
-
-      this.gridContainer.appendChild(cell);
+          // Add click listener to change cell image
+          cell.addEventListener("click", () => this.changeCellImage(cell, key));
+          this.gridContainer.appendChild(cell);
+        }
+      }
     }
 
-    // Ensure the grid container covers the entire screen
-    this.gridContainer.style.width = `${columns * this.blockSize}px`;
+    // Update grid container size
+    this.gridContainer.style.width = `${cols * this.blockSize}px`;
     this.gridContainer.style.height = `${rows * this.blockSize}px`;
   }
 
+  expandGrid(direction) {
+    const rows = this.gridContainer.style.gridTemplateRows.split(" ").length;
+    const cols = this.gridContainer.style.gridTemplateColumns.split(" ").length;
+
+    if (direction === "up") {
+      this.createGrid(10, cols); // Add 10 more rows at the top
+    } else if (direction === "down") {
+      this.createGrid(10, cols); // Add 10 more rows at the bottom
+    } else if (direction === "left") {
+      this.createGrid(rows, 10); // Add 10 more columns to the left
+    } else if (direction === "right") {
+      this.createGrid(rows, 10); // Add 10 more columns to the right
+    }
+  }
+
   centerBlock() {
-    const screenWidth = window.innerWidth;
-    const screenHeight = window.innerHeight;
-
-    // Calculate the center position
-    this.posX = Math.floor((screenWidth - this.blockSize) / 2);
-    this.posY = Math.floor((screenHeight - this.blockSize) / 2);
-
-    // Set the block's initial position
     this.block.style.transform = `translate(${this.posX}px, ${this.posY}px)`;
   }
 
   addEventListeners() {
-    // Keyboard event listener
-    window.addEventListener("keydown", (event) => this.moveBlock(event));
-
-    // Touch event listeners for dragging
-    this.block.addEventListener("touchstart", (event) =>
-      this.handleTouchStart(event)
-    );
-    this.block.addEventListener("touchmove", (event) =>
-      this.handleTouchMove(event)
-    );
-    this.block.addEventListener("touchend", () => this.handleTouchEnd());
+    window.addEventListener("keydown", (event) => this.handleMovement(event));
   }
 
-  moveBlock(event) {
-    const step = this.blockSize; // Move by one block size
-    let moved = false; // Flag to check if the block moved
+  handleMovement(event) {
+    const step = this.blockSize;
 
     switch (event.key) {
       case "ArrowUp":
-        if (this.posY - step >= 0) {
-          this.posY -= step;
-          moved = true;
+        this.posY -= step;
+        if (this.posY < 0) {
+          this.expandGrid("up");
+          this.posY = 0;
         }
         break;
+
       case "ArrowDown":
-        if (this.posY + step <= window.innerHeight - this.blockSize) {
-          this.posY += step;
-          moved = true;
+        this.posY += step;
+        if (this.posY >= this.gridContainer.offsetHeight) {
+          this.expandGrid("down");
         }
         break;
+
       case "ArrowLeft":
-        if (this.posX - step >= 0) {
-          this.posX -= step;
-          moved = true;
+        this.posX -= step;
+        if (this.posX < 0) {
+          this.expandGrid("left");
+          this.posX = 0;
         }
         break;
+
       case "ArrowRight":
-        if (this.posX + step <= window.innerWidth - this.blockSize) {
-          this.posX += step;
-          moved = true;
+        this.posX += step;
+        if (this.posX >= this.gridContainer.offsetWidth) {
+          this.expandGrid("right");
         }
         break;
     }
 
-    if (moved) {
-      this.updateBlockPosition();
-      this.playMoveSound(); // Play the move sound effect
-    }
-  }
-
-  handleTouchStart(event) {
-    // Get the initial touch position
-    this.touchStartX = event.touches[0].clientX;
-    this.touchStartY = event.touches[0].clientY;
-    this.isDragging = true;
-  }
-
-  handleTouchMove(event) {
-    if (!this.isDragging) return;
-
-    // Calculate the new position based on touch movement
-    const touchX = event.touches[0].clientX;
-    const touchY = event.touches[0].clientY;
-    const deltaX = touchX - this.touchStartX;
-    const deltaY = touchY - this.touchStartY;
-
-    // Update the block's position
-    this.posX += deltaX;
-    this.posY += deltaY;
-
-    // Constrain the block within the screen boundaries
-    this.posX = Math.max(
-      0,
-      Math.min(window.innerWidth - this.blockSize, this.posX)
-    );
-    this.posY = Math.max(
-      0,
-      Math.min(window.innerHeight - this.blockSize, this.posY)
-    );
-
-    // Update the block's position on the screen
     this.updateBlockPosition();
-
-    // Update the initial touch position for the next move
-    this.touchStartX = touchX;
-    this.touchStartY = touchY;
-
-    // Play the move sound effect
-    this.playMoveSound();
-  }
-
-  handleTouchEnd() {
-    this.isDragging = false;
   }
 
   updateBlockPosition() {
     this.block.style.transform = `translate(${this.posX}px, ${this.posY}px)`;
+    this.playMoveSound();
+  }
+
+  changeCellImage(cell, key) {
+    const cellState = this.grid.get(key);
+    cellState.image = this.cellImage;
+    cell.style.backgroundImage = `url(${this.cellImage})`;
+
+    // Revert back to default image after 1 minute
+    setTimeout(() => {
+      cellState.image = this.defaultCellImage;
+      cell.style.backgroundImage = `url(${this.defaultCellImage})`;
+    }, 60000);
+
+    this.playImageChangeSound();
   }
 
   playMoveSound() {
-    this.moveSound.currentTime = 0; // Rewind the sound to the start
-    this.moveSound.play(); // Play the sound
+    this.moveSound.currentTime = 0;
+    this.moveSound.play();
   }
 
-  // Change the image of the clicked/touched cell
-  changeCellImage(cell) {
-    // Apply the single image to the cell
-    cell.style.backgroundImage = `url(${this.cellImage})`;
-    cell.style.backgroundSize = "cover"; // Ensure the image fits the cell
-
-    // Play the image change sound effect
-    this.playImageChangeSound();
-
-    setTimeout(() => {
-      cell.style.backgroundImage = `url(${this.defaultCellImage})`;
-    }, 60000); // 60,000 milliseconds = 1 minute
-  }
-
-  // Play the image change sound effect
   playImageChangeSound() {
-    this.grassChangeSound.currentTime = 0; // Rewind the sound to the start
-    this.grassChangeSound.play(); // Play the sound
+    this.grassChangeSound.currentTime = 0;
+    this.grassChangeSound.play();
   }
 }
 
 // Initialize the game
 const gridGame = new GridGame();
+  
