@@ -2,18 +2,30 @@ import { BLOCK_SIZE } from "./config.js";
 import { Grid } from "./grid.js";
 import { User } from "./user.js";
 
+class Game {
+  constructor() {
+    this.blockElement = document.getElementById("block");
+    this.gridContainer = document.getElementById("gridContainer");
+    this.moveSound = document.getElementById("moveSound");
+    this.grassChangeSound = document.getElementById("grassChangeSound");
+    this.hitSound = document.getElementById("hitSound");
+
+    this.grid = new Grid(this.gridContainer, BLOCK_SIZE, this.grassChangeSound);
+    this.user = new User(this.blockElement, BLOCK_SIZE, this.moveSound, this.hitSound);
+  }
+
+  initialize() {
+    this.grid.create();
+    this.user.center();
+    this.setupEventListeners();
+  }
+
+  setupEventListeners() {
+    window.addEventListener("keydown", (event) => this.user.move(event));
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-  const blockElement = document.getElementById("block");
-  const gridContainer = document.getElementById("gridContainer");
-  const moveSound = document.getElementById("moveSound");
-  const grassChangeSound = document.getElementById("grassChangeSound");
-  const hitSound = document.getElementById("hitSound");
-
-  const grid = new Grid(gridContainer, BLOCK_SIZE, grassChangeSound);
-  grid.create();
-
-  const user = new User(blockElement, BLOCK_SIZE, moveSound, hitSound);
-  user.center();
-
-  window.addEventListener("keydown", (event) => user.move(event));
+  const game = new Game();
+  game.initialize();
 });
