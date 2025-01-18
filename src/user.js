@@ -1,11 +1,9 @@
-import { playSound } from "./sounds.js";
+import { playSound  } from "./sounds.js";
 
 export class User {
-  constructor(blockElement, blockSize, moveSound, clickSound) {
+  constructor(blockElement, blockSize) {
     this.blockElement = blockElement;
     this.blockSize = blockSize;
-    this.moveSound = moveSound;
-    this.clickSound = clickSound;
     this.posX = 0;
     this.posY = 0;
     this.touchStartX = 0;
@@ -51,7 +49,7 @@ export class User {
 
     if (moved) {
       this.updatePosition();
-      playSound(this.moveSound);
+      playSound('move');
     }
   }
 
@@ -60,7 +58,7 @@ export class User {
     this.blockElement.style.filter = "brightness(50%) sepia(100%) saturate(1000%) hue-rotate(0deg)";
 
     // Play the click sound
-    playSound(this.clickSound);
+    playSound('hit');
 
     setTimeout(() => {
       this.blockElement.style.filter = ""; // Reset the filter

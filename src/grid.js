@@ -2,10 +2,9 @@ import { GRASS_CELL, SOILD_CELL,GROW_GRASS_TIME } from "./config.js";
 import { playSound } from "./sounds.js";
 
 export class Grid {
-  constructor(container, blockSize, grassChangeSound) {
+  constructor(container, blockSize) {
     this.container = container;
     this.blockSize = blockSize;
-    this.grassChangeSound = grassChangeSound;
   }
 
   create() {
@@ -31,7 +30,7 @@ export class Grid {
   changeCellImage(cell) {
     cell.style.backgroundImage = `url(${SOILD_CELL})`;
     cell.style.backgroundSize = "cover";
-    playSound(this.grassChangeSound);
+    playSound('grassChange');
 
     setTimeout(() => {
       cell.style.backgroundImage = `url(${GRASS_CELL})`;
