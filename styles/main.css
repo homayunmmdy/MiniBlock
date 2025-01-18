@@ -41,6 +41,7 @@ html {
   background-position: center;
   background-size: cover;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .grid-cell {
