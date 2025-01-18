@@ -1,4 +1,4 @@
-import { GRASS_CELL, SOILD_CELL } from "./config.js";
+import { GRASS_CELL, SOILD_CELL,GROW_GRASS_TIME } from "./config.js";
 import { playSound } from "./sounds.js";
 
 export class Grid {
@@ -35,6 +35,6 @@ export class Grid {
 
     setTimeout(() => {
       cell.style.backgroundImage = `url(${GRASS_CELL})`;
-    }, 60000);
+    }, GROW_GRASS_TIME);
   }
 }
