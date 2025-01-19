@@ -1,4 +1,10 @@
-import { GRASS_CELL, SOILD_CELL, BUSH_CELL, GROW_GRASS_TIME, ADD_BUSH_INTERVAL } from "./config.js";
+import {
+  GRASS_CELL,
+  SOILD_CELL,
+  BUSH_CELL,
+  GROW_GRASS_TIME,
+  ADD_BUSH_INTERVAL,
+} from "./config.js";
 import { playSound } from "./sounds.js";
 
 export class Grid {
@@ -7,6 +13,9 @@ export class Grid {
     this.blockSize = blockSize;
     this.cells = [];
     this.bushTimer = null;
+    this.bushCount = 0; // Count of bushes removed by the user
+
+    this.loadBushCount();
   }
 
   create() {
@@ -57,13 +66,31 @@ export class Grid {
       cell.dataset.type = "grass";
       cell.style.backgroundImage = `url(${GRASS_CELL})`;
       playSound("bushRemove");
+      this.incrementBushCount(); // Increment the bush count when a bush is removed
     }
+  }
+
+  incrementBushCount() {
+    this.bushCount += 1;
+    this.saveBushCount();
+  }
+
+
+  saveBushCount() {
+    localStorage.setItem("bushCount", this.bushCount);
+  }
+
+  loadBushCount() {
+    const storedCount = localStorage.getItem("bushCount");
+    this.bushCount = storedCount ? parseInt(storedCount, 10) : 0;
   }
 
   addBushes() {
     const totalCells = this.cells.length;
     const targetBushCount = Math.floor(totalCells * 0.2);
-    const currentBushCount = this.cells.filter(cell => cell.dataset.type === "bush").length;
+    const currentBushCount = this.cells.filter(
+      (cell) => cell.dataset.type === "bush"
+    ).length;
     const bushesToAdd = targetBushCount - currentBushCount;
 
     if (bushesToAdd > 0) {
