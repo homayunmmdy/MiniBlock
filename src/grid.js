@@ -34,7 +34,6 @@ export class Grid {
       cell.classList.add("grid-cell");
       cell.dataset.type = "grass"; // Default cell type is grass
       cell.style.backgroundImage = `url(${GRASS_CELL})`;
-      cell.style.backgroundSize = "cover";
 
       cell.addEventListener("click", () => this.handleCellClick(cell));
 
@@ -103,7 +102,6 @@ export class Grid {
         if (cell.dataset.type === "grass") {
           cell.dataset.type = "bush";
           cell.style.backgroundImage = `url(${BUSH_CELL})`;
-          playSound("bushAdd");
           addedBushes++;
         }
       }
