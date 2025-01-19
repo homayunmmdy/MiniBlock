@@ -1,4 +1,5 @@
-import { playSound  } from "./sounds.js";
+
+import { playSound } from "./sounds.js";
 
 export class User {
   constructor(blockElement, blockSize) {
@@ -6,12 +7,12 @@ export class User {
     this.blockSize = blockSize;
     this.posX = 0;
     this.posY = 0;
-    this.touchStartX = 0;
-    this.touchStartY = 0;
-    this.isDragging = false;
 
     // Add click event listener to the block
     this.blockElement.addEventListener("click", () => this.handleClick());
+
+    // Add keydown event listener for movement controls
+    window.addEventListener("keydown", (event) => this.move(event));
   }
 
   center() {
@@ -30,18 +31,23 @@ export class User {
     const step = this.blockSize;
     let moved = false;
 
+    // Handle arrow keys and WASD keys for movement
     switch (event.key) {
-      case "ArrowUp":
+      case "ArrowUp": // Move up
+      case "w":
         if (this.posY - step >= 0) this.posY -= step, moved = true;
         break;
-      case "ArrowDown":
+      case "ArrowDown": // Move down
+      case "s":
         if (this.posY + step <= window.innerHeight - this.blockSize)
           this.posY += step, moved = true;
         break;
-      case "ArrowLeft":
+      case "ArrowLeft": // Move left
+      case "a":
         if (this.posX - step >= 0) this.posX -= step, moved = true;
         break;
-      case "ArrowRight":
+      case "ArrowRight": // Move right
+      case "d":
         if (this.posX + step <= window.innerWidth - this.blockSize)
           this.posX += step, moved = true;
         break;
@@ -49,7 +55,7 @@ export class User {
 
     if (moved) {
       this.updatePosition();
-      playSound('move');
+      playSound('move'); // Play movement sound
     }
   }
 
