@@ -3,6 +3,7 @@ const sounds = {
   move: new Audio('./assets/sounds/Step.mp3'),
   grassChange: new Audio('./assets/sounds/grass.mp3'),
   hit: new Audio('./assets/sounds/hit.mp3'),
+  bushRemove: new Audio('./assets/sounds/bushRemove.mp3'),
 };
 
 // Function to play a sound by name
