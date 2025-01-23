@@ -1,4 +1,5 @@
-import './style.css'
+import './styles/main.css'
+import './ts/game.ts'
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div class="mainGround">
