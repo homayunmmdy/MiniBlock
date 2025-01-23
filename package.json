@@ -1,6 +1,6 @@
 {
   "name": "miniblock",
-  "description": "**MiniBlock 2D** is a lightweight, 2D game. The goal of this project is to improve JavaScript skills while offering a fun, interactive experience for players. Whether you’re a gamer exploring blocky worlds or a developer honing your skills, MiniBlock 2D has something for you!",
+  "description": "MiniBlock 2D is a lightweight, 2D game. The goal of this project is to improve JavaScript skills while offering a fun, interactive experience for players. Whether you’re a gamer exploring blocky worlds or a developer honing your skills, MiniBlock 2D has something for you!",
   "private": true,
   "version": "1.0.0",
   "type": "module",
