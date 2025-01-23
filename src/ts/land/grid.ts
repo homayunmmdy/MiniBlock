@@ -1,27 +1,24 @@
 import {
-  ADD_BUSH_INTERVAL,
-  BUSH_CELL,
   GRASS_CELL,
   GROW_GRASS_TIME,
   SOILD_CELL,
-} from "../config/config.js";
-import { playSound } from "./sounds.ts";
+} from "../../config/config.js";
+import { playSound } from "../sounds.ts";
+import { Bush } from "./bush.ts";
 
 export class Grid {
   private container: HTMLElement;
   private blockSize: number;
   private cells: HTMLElement[];
-  private bushTimer: number | null;
-  private bushCount: number;
+  private bush: Bush;
 
   constructor(container: HTMLElement, blockSize: number) {
     this.container = container;
     this.blockSize = blockSize;
     this.cells = [];
-    this.bushTimer = null;
-    this.bushCount = 0; // Count of bushes removed by the user
+    this.bush = new Bush(this.cells);
 
-    this.loadBushCount();
+    this.bush.loadBushCount();
   }
 
   create() {
@@ -51,10 +48,10 @@ export class Grid {
     this.container.style.height = `${rows * this.blockSize}px`;
 
     // Add bushes covering 20% of the land
-    this.addBushes();
+    this.bush.addBushes();
 
     // Start timer to periodically add bushes
-    this.startBushTimer();
+    this.bush.startBushTimer();
   }
 
   handleCellClick(cell: HTMLElement) {
@@ -71,53 +68,7 @@ export class Grid {
       cell.dataset.type = "grass";
       cell.style.backgroundImage = `url(${GRASS_CELL})`;
       playSound("bushRemove");
-      this.incrementBushCount(); // Increment the bush count when a bush is removed
+      this.bush.incrementBushCount(); // Increment the bush count when a bush is removed
     }
-  }
-
-  incrementBushCount() {
-    this.bushCount += 1;
-    this.saveBushCount();
-  }
-
-  saveBushCount() {
-    localStorage.setItem("bushCount", this.bushCount.toString());
-  }
-
-  loadBushCount() {
-    const storedCount = localStorage.getItem("bushCount");
-    this.bushCount = storedCount ? parseInt(storedCount, 10) : 0;
-  }
-
-  addBushes() {
-    const totalCells = this.cells.length;
-    const targetBushCount = Math.floor(totalCells * 0.2);
-    const currentBushCount = this.cells.filter(
-      (cell) => cell.dataset.type === "bush"
-    ).length;
-    const bushesToAdd = targetBushCount - currentBushCount;
-
-    if (bushesToAdd > 0) {
-      let addedBushes = 0;
-
-      while (addedBushes < bushesToAdd) {
-        const randomIndex = Math.floor(Math.random() * totalCells);
-        const cell = this.cells[randomIndex];
-
-        if (cell.dataset.type === "grass") {
-          cell.dataset.type = "bush";
-          cell.style.backgroundImage = `url(${BUSH_CELL})`;
-          addedBushes++;
-        }
-      }
-    }
-  }
-
-  startBushTimer() {
-    if (this.bushTimer) clearInterval(this.bushTimer);
-
-    this.bushTimer = setInterval(() => {
-      this.addBushes();
-    }, ADD_BUSH_INTERVAL);
   }
 }

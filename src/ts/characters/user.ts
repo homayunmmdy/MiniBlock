@@ -1,4 +1,4 @@
-import { playSound } from "./sounds.js";
+import { playSound } from "../sounds";
 
 export class User {
   private blockElement: HTMLElement;

@@ -1,6 +1,6 @@
 import { BLOCK_SIZE } from "../config/config.ts";
-import { Grid } from "./grid.ts";
-import { User } from "./user.ts";
+import { User } from "./characters/user.ts";
+import { Grid } from "./land/grid.ts";
 
 class Game {
   private blockElement: HTMLElement;
