@@ -10,7 +10,7 @@ class Game {
   private user: User;
 
   constructor() {
-    this.blockElement = document.getElementById("block") as HTMLElement;
+    this.blockElement = document.getElementById("user") as HTMLElement;
     this.gridContainer = document.getElementById(
       "gridContainer"
     ) as HTMLElement;
