@@ -17,7 +17,7 @@ class Game {
     ) as HTMLElement;
 
     this.grid = new Grid(this.gridContainer, BLOCK_SIZE);
-    this.user = new User(this.blockElement, BLOCK_SIZE);
+    this.user = new User(this.blockElement);
   }
 
   initialize(): void {
@@ -42,7 +42,7 @@ class Game {
       sheepElement.className = "sheep";
       this.gridContainer.appendChild(sheepElement);
 
-      const sheep = new Sheep(sheepElement, this.gridContainer, BLOCK_SIZE);
+      const sheep = new Sheep(sheepElement, this.gridContainer);
       this.sheeps.push(sheep);
       sheep.startSound(); 
     }
@@ -66,7 +66,7 @@ class Game {
         sheepElement.className = "sheep";
         this.gridContainer.appendChild(sheepElement);
 
-        const newSheep = new Sheep(sheepElement, this.gridContainer, BLOCK_SIZE);
+        const newSheep = new Sheep(sheepElement, this.gridContainer);
         this.sheeps.push(newSheep);
       }
     }

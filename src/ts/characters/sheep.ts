@@ -1,10 +1,9 @@
-import { SHEEP_MOVE, SHEEP_SOUND } from "../../config/config";
+import { BLOCK_SIZE, SHEEP_MOVE, SHEEP_SOUND } from "../../config/config";
 import { playSound } from "../sounds";
 
 export class Sheep {
   private sheepElement: HTMLElement;
   private gridContainer: HTMLElement;
-  private blockSize: number;
   private posX: number;
   private posY: number;
   private movementInterval: number | undefined;
@@ -13,19 +12,17 @@ export class Sheep {
   constructor(
     sheepElement: HTMLElement,
     gridContainer: HTMLElement,
-    blockSize: number
   ) {
     this.sheepElement = sheepElement;
     this.gridContainer = gridContainer;
-    this.blockSize = blockSize;
 
     // Randomly place the sheep within the grid
     this.posX =
-      Math.floor(Math.random() * (gridContainer.offsetWidth / blockSize)) *
-      blockSize;
+      Math.floor(Math.random() * (gridContainer.offsetWidth / BLOCK_SIZE)) *
+      BLOCK_SIZE;
     this.posY =
-      Math.floor(Math.random() * (gridContainer.offsetHeight / blockSize)) *
-      blockSize;
+      Math.floor(Math.random() * (gridContainer.offsetHeight / BLOCK_SIZE)) *
+      BLOCK_SIZE;
 
     this.updatePosition();
 
@@ -49,24 +46,24 @@ export class Sheep {
       const direction = Math.floor(Math.random() * 4); // 0 = up, 1 = down, 2 = left, 3 = right
       switch (direction) {
         case 0: // Up
-          if (this.posY - this.blockSize >= 0) this.posY -= this.blockSize;
+          if (this.posY - BLOCK_SIZE >= 0) this.posY -= BLOCK_SIZE;
           break;
         case 1: // Down
           if (
-            this.posY + this.blockSize <=
-            this.gridContainer.offsetHeight - this.blockSize
+            this.posY + BLOCK_SIZE <=
+            this.gridContainer.offsetHeight - BLOCK_SIZE
           )
-            this.posY += this.blockSize;
+            this.posY += BLOCK_SIZE;
           break;
         case 2: // Left
-          if (this.posX - this.blockSize >= 0) this.posX -= this.blockSize;
+          if (this.posX - BLOCK_SIZE >= 0) this.posX -= BLOCK_SIZE;
           break;
         case 3: // Right
           if (
-            this.posX + this.blockSize <=
-            this.gridContainer.offsetWidth - this.blockSize
+            this.posX + BLOCK_SIZE <=
+            this.gridContainer.offsetWidth - BLOCK_SIZE
           )
-            this.posX += this.blockSize;
+            this.posX += BLOCK_SIZE;
           break;
       }
 
