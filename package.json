@@ -1,16 +1,16 @@
 {
   "name": "miniblock",
-  "description": "**MiniBlock 2D** is a lightweight, 2D game. The goal of this project is to improve JavaScript skills while offering a fun, interactive experience for players. Whether you’re a gamer exploring blocky worlds or a developer honing your skills, MiniBlock 2D has something for you!",
+  "description": "MiniBlock 2D is a lightweight, 2D game. The goal of this project is to improve JavaScript skills while offering a fun, interactive experience for players. Whether you’re a gamer exploring blocky worlds or a developer honing your skills, MiniBlock 2D has something for you!",
+  "private": true,
   "version": "1.0.0",
-  "main": "index.js",
-  "devDependencies": {},
+  "type": "module",
   "scripts": {
-    "test": "vitest"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   },
-  "dependencies": {
-    "vitest": "^1.6.0"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "devDependencies": {
+    "typescript": "~5.6.2",
+    "vite": "^6.0.5"
+  }
 }

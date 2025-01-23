@@ -1,14 +1,20 @@
 import {
-  GRASS_CELL,
-  SOILD_CELL,
-  BUSH_CELL,
-  GROW_GRASS_TIME,
   ADD_BUSH_INTERVAL,
-} from "./config.js";
-import { playSound } from "./sounds.js";
+  BUSH_CELL,
+  GRASS_CELL,
+  GROW_GRASS_TIME,
+  SOILD_CELL,
+} from "../config/config.js";
+import { playSound } from "./sounds.ts";
 
 export class Grid {
-  constructor(container, blockSize) {
+  private container: HTMLElement;
+  private blockSize: number;
+  private cells: HTMLElement[];
+  private bushTimer: number | null;
+  private bushCount: number;
+
+  constructor(container: HTMLElement, blockSize: number) {
     this.container = container;
     this.blockSize = blockSize;
     this.cells = [];
@@ -51,7 +57,7 @@ export class Grid {
     this.startBushTimer();
   }
 
-  handleCellClick(cell) {
+  handleCellClick(cell: HTMLElement) {
     if (cell.dataset.type === "grass") {
       cell.dataset.type = "solid";
       cell.style.backgroundImage = `url(${SOILD_CELL})`;
@@ -74,9 +80,8 @@ export class Grid {
     this.saveBushCount();
   }
 
-
   saveBushCount() {
-    localStorage.setItem("bushCount", this.bushCount);
+    localStorage.setItem("bushCount", this.bushCount.toString());
   }
 
   loadBushCount() {

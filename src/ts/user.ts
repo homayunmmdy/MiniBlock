@@ -1,8 +1,12 @@
-
 import { playSound } from "./sounds.js";
 
 export class User {
-  constructor(blockElement, blockSize) {
+  private blockElement: HTMLElement;
+  private blockSize: number;
+  private posX: number;
+  private posY: number;
+
+  constructor(blockElement: HTMLElement, blockSize: number) {
     this.blockElement = blockElement;
     this.blockSize = blockSize;
     this.posX = 0;
@@ -15,7 +19,7 @@ export class User {
     window.addEventListener("keydown", (event) => this.move(event));
   }
 
-  center() {
+  center(): void {
     const screenWidth = window.innerWidth;
     const screenHeight = window.innerHeight;
     this.posX = Math.floor((screenWidth - this.blockSize) / 2);
@@ -23,11 +27,11 @@ export class User {
     this.updatePosition();
   }
 
-  updatePosition() {
+  updatePosition(): void {
     this.blockElement.style.transform = `translate(${this.posX}px, ${this.posY}px)`;
   }
 
-  move(event) {
+  move(event: KeyboardEvent): void {
     const step = this.blockSize;
     let moved = false;
 
@@ -59,7 +63,7 @@ export class User {
     }
   }
 
-  handleClick() {
+  handleClick(): void {
     // Apply the filter style
     this.blockElement.style.filter = "brightness(50%) sepia(100%) saturate(1000%) hue-rotate(0deg)";
 
