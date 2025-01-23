@@ -4,4 +4,5 @@ export type SoundsFileType = {
   grassChange: HTMLAudioElement;
   hit: HTMLAudioElement;
   bushRemove: HTMLAudioElement;
+  sheep: HTMLAudioElement;
 };

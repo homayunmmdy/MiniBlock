@@ -6,6 +6,7 @@ const sounds: SoundsFileType = {
   grassChange: new Audio("sounds/grass.mp3"),
   hit: new Audio("sounds/hit.mp3"),
   bushRemove: new Audio("sounds/bushRemove.mp3"),
+  sheep: new Audio("sounds/sheep.mp3"),
 };
 
 type SoundName = keyof SoundsFileType;
