@@ -8,6 +8,7 @@ export class Sheep {
   private posY: number;
   private movementInterval: number | undefined;
   private soundInterval: number | undefined;
+  private static sheepKilledCount: number = 0; // Static counter for all sheep instances
 
   constructor(
     sheepElement: HTMLElement,
@@ -33,7 +34,7 @@ export class Sheep {
     this.startMovement();
 
     // Start periodic sound
-    () => this.startSound(); // Ensure sound starts
+    this.startSound(); // Ensure sound starts
   }
 
   updatePosition(): void {
@@ -70,7 +71,6 @@ export class Sheep {
       this.updatePosition();
     }, SHEEP_MOVE); // Move every second
   }
-  
 
   startSound(): void {
     this.soundInterval = setInterval(() => {
@@ -93,20 +93,31 @@ export class Sheep {
     // Stop movement
     if (this.movementInterval) clearInterval(this.movementInterval);
 
-     // Stop sound
-     if (this.soundInterval) clearInterval(this.soundInterval);
+    // Stop sound
+    if (this.soundInterval) clearInterval(this.soundInterval);
 
     // Mark as "destroyed" (this can be managed by the Game class)
     this.sheepElement.setAttribute("data-destroyed", "true");
+
+    // Increment the sheep killed count
+    Sheep.sheepKilledCount++;
+
+    // Save the count to local storage
+    localStorage.setItem('sheepKilledCount', Sheep.sheepKilledCount.toString());
   }
 
   stopAllIntervals(): void {
     if (this.movementInterval) clearInterval(this.movementInterval);
     if (this.soundInterval) clearInterval(this.soundInterval);
   }
-  
+
   // Getter method to check if the sheep is destroyed
   public isDestroyed(): boolean {
     return this.sheepElement.getAttribute("data-destroyed") === "true";
+  }
+
+  // Static method to get the sheep killed count
+  public static getSheepKilledCount(): number {
+    return Sheep.sheepKilledCount;
   }
 }
