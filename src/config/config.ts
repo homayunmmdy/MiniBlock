@@ -10,3 +10,7 @@ export const AMOUNT_SHEEP = 0.02 // 2%
 export const ADD_BUSH_SHEEP = 300000; // 5 minutes in milliseconds 
 export const SHEEP_MOVE = 1500;
 export const SHEEP_SOUND = 10000 // 1 second in milliseconds
+
+//Local Sotrage 
+export const BUSHES = 'bushes'
+export const SHEEP = 'sheep'

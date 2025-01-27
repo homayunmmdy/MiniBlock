@@ -1,4 +1,4 @@
-import { BLOCK_SIZE, SHEEP_MOVE, SHEEP_SOUND } from "../../config/config";
+import { BLOCK_SIZE, SHEEP, SHEEP_MOVE, SHEEP_SOUND } from "../../config/config";
 import { playSound } from "../sounds";
 
 export class Sheep {
@@ -103,7 +103,7 @@ export class Sheep {
     Sheep.sheepKilledCount++;
 
     // Save the count to local storage
-    localStorage.setItem('sheepKilledCount', Sheep.sheepKilledCount.toString());
+    localStorage.setItem(SHEEP, Sheep.sheepKilledCount.toString());
   }
 
   stopAllIntervals(): void {

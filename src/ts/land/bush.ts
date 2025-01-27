@@ -1,4 +1,4 @@
-import { ADD_BUSH_INTERVAL, BUSH_CELL } from "../../config/config.ts";
+import { ADD_BUSH_INTERVAL, BUSH_CELL, BUSHES } from "../../config/config.ts";
 
 export class Bush {
   private cells: HTMLElement[];
@@ -17,11 +17,11 @@ export class Bush {
   }
 
   saveBushCount() {
-    localStorage.setItem("bushCount", this.bushCount.toString());
+    localStorage.setItem(BUSHES, this.bushCount.toString());
   }
 
   loadBushCount() {
-    const storedCount = localStorage.getItem("bushCount");
+    const storedCount = localStorage.getItem(BUSHES);
     this.bushCount = storedCount ? parseInt(storedCount, 10) : 0;
   }
 
