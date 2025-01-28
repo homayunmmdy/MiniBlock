@@ -74,8 +74,8 @@ export class Sheep {
 
   startSound(): void {
     this.soundInterval = setInterval(() => {
-      // Play the sound for this ship
-      console.log('bee')
+      // Play the sound for this sheep
+      console.log('bee');
       playSound("sheep");
     }, SHEEP_SOUND); // Play sound every 1 minute
   }
@@ -104,6 +104,9 @@ export class Sheep {
 
     // Save the count to local storage
     localStorage.setItem(SHEEP, Sheep.sheepKilledCount.toString());
+
+    // Update the inventory slot
+    this.updateInventorySlot();
   }
 
   stopAllIntervals(): void {
@@ -119,5 +122,23 @@ export class Sheep {
   // Static method to get the sheep killed count
   public static getSheepKilledCount(): number {
     return Sheep.sheepKilledCount;
+  }
+
+  // Static method to load the sheep killed count from localStorage
+  public static loadSheepKilledCount(): void {
+    const storedCount = localStorage.getItem(SHEEP);
+    Sheep.sheepKilledCount = storedCount ? parseInt(storedCount, 10) : 0;
+  }
+
+  // Method to update the inventory slot
+  private updateInventorySlot(): void {
+    const sheepSlot = document.querySelector('.slot[data-sheep-count]') as HTMLElement;
+    if (sheepSlot) {
+      sheepSlot.dataset.sheepCount = Sheep.sheepKilledCount.toString();
+      const sheepCountElement = sheepSlot.querySelector('.sheep-count') as HTMLElement;
+      if (sheepCountElement) {
+        sheepCountElement.textContent = Sheep.sheepKilledCount.toString();
+      }
+    }
   }
 }

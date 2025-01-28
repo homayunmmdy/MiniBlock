@@ -1,7 +1,6 @@
 import { ADD_BUSH_SHEEP, AMOUNT_SHEEP, BLOCK_SIZE } from "../config/config.ts";
 import { Sheep } from "./characters/sheep.ts";
 import { User } from "./characters/user.ts";
-import { Bush } from "./land/bush.ts";
 import { Grid } from "./land/grid.ts";
 
 class Game {
@@ -10,32 +9,35 @@ class Game {
   private grid: Grid;
   private user: User;
   private sheeps: Sheep[] = [];
-  private bush: Bush;
-
 
   constructor() {
     this.blockElement = document.getElementById("user") as HTMLElement;
-    this.gridContainer = document.getElementById(
-      "gridContainer"
-    ) as HTMLElement;
+    this.gridContainer = document.getElementById("gridContainer") as HTMLElement;
 
     this.grid = new Grid(this.gridContainer, BLOCK_SIZE);
     this.user = new User(this.blockElement);
-
-    // Initialize Bush with grid cells
-    const cells = Array.from(this.gridContainer.querySelectorAll(".cell")) as HTMLElement[];
-    this.bush = new Bush(cells);
   }
 
   initialize(): void {
     this.grid.create();
     this.user.center();
     this.spawnSheeps();
-    this.bush.loadBushCount(); // Load bush count from localStorage
-    this.bush.startBushTimer(); // Start bush spawning
 
-    // Periodically check and manage shps
-    setInterval(() => this.manageSheeps(), ADD_BUSH_SHEEP); 
+    // Load the sheep killed count from localStorage
+    Sheep.loadSheepKilledCount();
+
+    // Update the inventory slot with the loaded count
+    const sheepSlot = document.querySelector('.slot[data-sheep-count]') as HTMLElement;
+    if (sheepSlot) {
+      sheepSlot.dataset.sheepCount = Sheep.getSheepKilledCount().toString();
+      const sheepCountElement = sheepSlot.querySelector('.sheep-count') as HTMLElement;
+      if (sheepCountElement) {
+        sheepCountElement.textContent = Sheep.getSheepKilledCount().toString();
+      }
+    }
+
+    // Periodically check and manage sheeps
+    setInterval(() => this.manageSheeps(), ADD_BUSH_SHEEP);
 
     this.setupEventListeners();
   }
@@ -53,7 +55,7 @@ class Game {
 
       const sheep = new Sheep(sheepElement, this.gridContainer);
       this.sheeps.push(sheep);
-      sheep.startSound(); 
+      sheep.startSound();
     }
   }
 

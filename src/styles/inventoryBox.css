@@ -22,6 +22,8 @@
   background-color: #c6c6c6;
   border: 2px solid #5a5a5a;
   box-sizing: border-box;
+  background-position: center;
+  background-size: cover;
 }
 
 .slot:hover {
@@ -30,9 +32,9 @@
 }
 
 .inventory-box .bush {
-    width: var(--blockSize);
-    height: var(--blockSize);
-    background-image: url("images/grass.webp");
-    background-position: center;
-    background-size: cover;
+    background-image: url("images/bush.webp");
+}
+
+.inventory-box .sheep {
+    background-image: url("images/sheep.webp");
 }
