@@ -32,9 +32,9 @@
 }
 
 .inventory-box .bush {
-    background-image: url("images/bush.webp");
+    background-image: url("/images/bush.webp");
 }
 
 .inventory-box .sheep {
-    background-image: url("images/sheep.webp");
+    background-image: url("/images/sheep.webp");
 }

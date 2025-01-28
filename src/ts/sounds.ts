@@ -18,7 +18,7 @@ export function playSound(soundName: SoundName) {
     sound.currentTime = 0; // Reset audio to start
     sound.play();
   } else {
-    console.warn(`Sound "${soundName}" not found.`);
+    console.error(`Sound "${soundName}" not found.`);
   }
 }
 

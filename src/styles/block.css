@@ -28,7 +28,7 @@
   background-color: #c58c85;
   position: absolute;
   transition: all 0.1s ease;
-  background-image: url("../../public/images/user.jpg");
+  background-image: url("/images/user.jpg");
   background-position: center;
   background-size: cover;
   overflow: hidden;
@@ -40,7 +40,7 @@
   height: var(--blockSize);
   background-color: white;
   position: absolute;
-  background-image: url("../../public/images/sheep.webp");
+  background-image: url("/images/sheep.webp");
   background-size: cover;
   background-position: center;
   transition: background-image 0.3s ease;

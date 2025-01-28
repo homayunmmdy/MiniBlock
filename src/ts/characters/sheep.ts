@@ -76,7 +76,6 @@ export class Sheep {
   startSound(): void {
     this.soundInterval = setInterval(() => {
       // Play the sound for this sheep
-      console.log('bee');
       playSound("sheep");
     }, SHEEP_SOUND); // Play sound every 1 minute
   }
