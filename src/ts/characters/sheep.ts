@@ -1,4 +1,5 @@
 import { BLOCK_SIZE, SHEEP, SHEEP_MOVE, SHEEP_SOUND } from "../../config/config";
+import { UpdateInventorySlot } from "../Inventoary";
 import { playSound } from "../sounds";
 
 export class Sheep {
@@ -106,7 +107,7 @@ export class Sheep {
     localStorage.setItem(SHEEP, Sheep.sheepKilledCount.toString());
 
     // Update the inventory slot
-    this.updateInventorySlot();
+    UpdateInventorySlot(Sheep.sheepKilledCount, 'sheep');
   }
 
   stopAllIntervals(): void {
@@ -130,15 +131,5 @@ export class Sheep {
     Sheep.sheepKilledCount = storedCount ? parseInt(storedCount, 10) : 0;
   }
 
-  // Method to update the inventory slot
-  private updateInventorySlot(): void {
-    const sheepSlot = document.querySelector('.slot[data-sheep-count]') as HTMLElement;
-    if (sheepSlot) {
-      sheepSlot.dataset.sheepCount = Sheep.sheepKilledCount.toString();
-      const sheepCountElement = sheepSlot.querySelector('.sheep-count') as HTMLElement;
-      if (sheepCountElement) {
-        sheepCountElement.textContent = Sheep.sheepKilledCount.toString();
-      }
-    }
-  }
+
 }

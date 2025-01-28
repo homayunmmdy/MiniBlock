@@ -1,6 +1,7 @@
 import { ADD_BUSH_SHEEP, AMOUNT_SHEEP, BLOCK_SIZE } from "../config/config.ts";
 import { Sheep } from "./characters/sheep.ts";
 import { User } from "./characters/user.ts";
+import { UpdateInventorySlot } from "./Inventoary.ts";
 import { Grid } from "./land/grid.ts";
 
 class Game {
@@ -27,14 +28,7 @@ class Game {
     Sheep.loadSheepKilledCount();
 
     // Update the inventory slot with the loaded count
-    const sheepSlot = document.querySelector('.slot[data-sheep-count]') as HTMLElement;
-    if (sheepSlot) {
-      sheepSlot.dataset.sheepCount = Sheep.getSheepKilledCount().toString();
-      const sheepCountElement = sheepSlot.querySelector('.sheep-count') as HTMLElement;
-      if (sheepCountElement) {
-        sheepCountElement.textContent = Sheep.getSheepKilledCount().toString();
-      }
-    }
+    UpdateInventorySlot(Sheep.getSheepKilledCount(),'sheep')
 
     // Periodically check and manage sheeps
     setInterval(() => this.manageSheeps(), ADD_BUSH_SHEEP);
