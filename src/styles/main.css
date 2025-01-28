@@ -1,3 +1,6 @@
+@import url("./block.css");
+@import url("./inventoryBox.css");
+
 /* reset defualt browser styles */
 
 * {
@@ -16,86 +19,4 @@ html {
 :root {
   --green: #7bb369;
   --blockSize: 50px;
-}
-
-.gridContainer {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(var(--blockSize), 1fr));
-  grid-template-rows: repeat(auto-fill, minmax(var(--blockSize), 1fr));
-  width: 100%;
-  height: 100vh;
-  background-color: var(--green);
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
-.user {
-  width: var(--blockSize);
-  height: var(--blockSize);
-  background-color: #c58c85;
-  position: absolute;
-  transition: all 0.1s ease;
-  background-image: url("../../public/images/user.jpg");
-  background-position: center;
-  background-size: cover;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-.grid-cell {
-  width: var(--blockSize);
-  height: var(--blockSize);
-  background-size: cover;
-  background-position: center;
-  transition: background-image 0.3s ease;
-  cursor: pointer;
-  background-image: url("images/grass.webp");
-  background-position: center;
-  background-size: cover;
-}
-
-.sheep {
-  width: var(--blockSize);
-  height: var(--blockSize);
-  background-color: white;
-  position: absolute;
-  background-image: url("../../public/images/sheep.webp");
-  background-size: cover;
-  background-position: center;
-  transition: background-image 0.3s ease;
-  cursor: pointer;
-}
-
-.inventory-box {
-  display: grid;
-  grid-template-columns: repeat(3, 64px); /* 3 columns, each 64px wide */
-  grid-gap: 8px; /* Space between slots */
-  padding: 16px;
-  background-color: #8b8b8b;
-  border: 4px solid #5a5a5a;
-  border-radius: 8px;
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  right: 50%;
-  transform: translate(-50%);
-  margin: 0px auto;
-  z-index: 99;
-  width: fit-content;
-}
-
-.slot {
-  width: 64px;
-  height: 64px;
-  background-color: #c6c6c6;
-  border: 2px solid #5a5a5a;
-  box-sizing: border-box;
-}
-
-.slot:hover {
-  background-color: #a8a8a8;
-  cursor: pointer;
 }

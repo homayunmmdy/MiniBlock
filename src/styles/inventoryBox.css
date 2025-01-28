@@ -1,0 +1,38 @@
+.inventory-box {
+  display: grid;
+  grid-template-columns: repeat(3, 64px); /* 3 columns, each 64px wide */
+  grid-gap: 8px; /* Space between slots */
+  padding: 16px;
+  background-color: #8b8b8b;
+  border: 4px solid #5a5a5a;
+  border-radius: 8px;
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  right: 50%;
+  transform: translate(-50%);
+  margin: 0px auto;
+  z-index: 99;
+  width: fit-content;
+}
+
+.slot {
+  width: var(--blockSize);
+  height: var(--blockSize);
+  background-color: #c6c6c6;
+  border: 2px solid #5a5a5a;
+  box-sizing: border-box;
+}
+
+.slot:hover {
+  background-color: #a8a8a8;
+  cursor: pointer;
+}
+
+.inventory-box .bush {
+    width: var(--blockSize);
+    height: var(--blockSize);
+    background-image: url("images/grass.webp");
+    background-position: center;
+    background-size: cover;
+}
