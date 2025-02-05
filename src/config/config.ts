@@ -4,6 +4,7 @@ export const GRASS_CELL = "images/grass.webp";
 export const BUSH_CELL = "images/bush.webp";
 export const GROW_GRASS_TIME = 60000; // 1 minute in milliseconds
 export const ADD_BUSH_INTERVAL = 300000; // 5 minutes in milliseconds 
+export const BUSH_COVERAGE_PERCENTAGE = 0.2;
 
 // ship config
 export const AMOUNT_SHEEP = 0.02 // 2%

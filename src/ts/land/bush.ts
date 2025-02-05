@@ -1,4 +1,4 @@
-import { ADD_BUSH_INTERVAL, BUSH_CELL, BUSHES } from "../../config/config";
+import { ADD_BUSH_INTERVAL, BUSH_CELL, BUSH_COVERAGE_PERCENTAGE, BUSHES } from "../../config/config";
 import { UpdateInventorySlot } from "../Inventoary";
 
 export class Bush {
@@ -32,7 +32,7 @@ export class Bush {
 
   addBushes() {
     const totalCells = this.cells.length;
-    const targetBushCount = Math.floor(totalCells * 0.2);
+    const targetBushCount = Math.floor(totalCells * BUSH_COVERAGE_PERCENTAGE);
     const currentBushCount = this.cells.filter(
       (cell) => cell.dataset.type === "bush"
     ).length;
