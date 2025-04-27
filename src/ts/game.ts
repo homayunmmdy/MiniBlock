@@ -3,6 +3,7 @@ import { Sheep } from "./characters/sheep.ts";
 import { User } from "./characters/user.ts";
 import { UpdateInventorySlot } from "./Inventoary.ts";
 import { Grid } from "./land/grid.ts";
+import {SoundController} from "./Controller/soundController.ts";
 
 class Game {
   private blockElement: HTMLElement;
@@ -34,6 +35,9 @@ class Game {
     setInterval(() => this.manageSheeps(), ADD_BUSH_SHEEP);
 
     this.setupEventListeners();
+
+    // Initialize the SoundController HERE
+    SoundController.initialize('soundToggle', 'soundIcon');
   }
 
   private spawnSheeps(): void {

@@ -1,6 +1,7 @@
+import { SoundController } from "../ts/Controller/soundController.ts";
 import { SoundsFileType } from "../types/types";
 
-// List of audio elements
+// Preloaded sounds
 const sounds: SoundsFileType = {
   move: new Audio("sounds/Step.mp3"),
   grassChange: new Audio("sounds/grass.mp3"),
@@ -13,6 +14,10 @@ type SoundName = keyof SoundsFileType;
 
 // Function to play a sound by name
 export function playSound(soundName: SoundName) {
+  if (SoundController.isSoundMuted()) {
+    return; // If muted, don't play anything
+  }
+
   const sound = sounds[soundName];
   if (sound) {
     sound.currentTime = 0; // Reset audio to start
@@ -21,8 +26,3 @@ export function playSound(soundName: SoundName) {
     console.error(`Sound "${soundName}" not found.`);
   }
 }
-
-// Example usage:
-// playSound('move');
-// playSound('grassChange');
-// playSound('hit');
