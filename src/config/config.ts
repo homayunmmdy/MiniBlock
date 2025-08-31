@@ -1,4 +1,4 @@
-export const BLOCK_SIZE = "50";
+export const BLOCK_SIZE = 50;
 export const SOILD_CELL = "images/dirt.webp";
 export const GRASS_CELL = "images/grass.webp";
 export const BUSH_CELL = "images/bush.webp";
