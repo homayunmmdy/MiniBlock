@@ -1,9 +1,9 @@
 import { ADD_BUSH_SHEEP, AMOUNT_SHEEP, BLOCK_SIZE } from "../config/config.ts";
 import { Sheep } from "./characters/sheep.ts";
 import { User } from "./characters/user.ts";
-import { UpdateInventorySlot } from "./Inventoary.ts";
+import { SoundController } from "./Controller/soundController.ts";
+import { UpdateInventorySlot } from "./features/Inventoary.ts";
 import { Grid } from "./land/grid.ts";
-import {SoundController} from "./Controller/soundController.ts";
 
 class Game {
   private blockElement: HTMLElement;
@@ -14,7 +14,9 @@ class Game {
 
   constructor() {
     this.blockElement = document.getElementById("user") as HTMLElement;
-    this.gridContainer = document.getElementById("gridContainer") as HTMLElement;
+    this.gridContainer = document.getElementById(
+      "gridContainer"
+    ) as HTMLElement;
 
     this.grid = new Grid(this.gridContainer, BLOCK_SIZE);
     this.user = new User(this.blockElement);
@@ -29,7 +31,7 @@ class Game {
     Sheep.loadSheepKilledCount();
 
     // Update the inventory slot with the loaded count
-    UpdateInventorySlot(Sheep.getSheepKilledCount(),'sheep')
+    UpdateInventorySlot(Sheep.getSheepKilledCount(), "sheep");
 
     // Periodically check and manage sheeps
     setInterval(() => this.manageSheeps(), ADD_BUSH_SHEEP);
@@ -37,7 +39,7 @@ class Game {
     this.setupEventListeners();
 
     // Initialize the SoundController HERE
-    SoundController.initialize('soundToggle', 'soundIcon');
+    SoundController.initialize("soundToggle", "soundIcon");
   }
 
   private spawnSheeps(): void {

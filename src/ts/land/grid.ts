@@ -4,7 +4,7 @@ import {
   SOILD_CELL,
 } from "../../config/config.js";
 import { CellType } from "../../types/types.ts";
-import { playSound } from "../sounds.ts";
+import { playSound } from "../features/sounds.ts";
 import { Bush } from "./bush.ts";
 
 export class Grid {

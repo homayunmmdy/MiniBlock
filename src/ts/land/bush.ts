@@ -1,5 +1,10 @@
-import { ADD_BUSH_INTERVAL, BUSH_CELL, BUSH_COVERAGE_PERCENTAGE, BUSHES } from "../../config/config";
-import { UpdateInventorySlot } from "../Inventoary";
+import {
+  ADD_BUSH_INTERVAL,
+  BUSH_CELL,
+  BUSH_COVERAGE_PERCENTAGE,
+  BUSHES,
+} from "../../config/config";
+import { UpdateInventorySlot } from "../features/Inventoary";
 
 export class Bush {
   private cells: HTMLElement[];
@@ -15,7 +20,7 @@ export class Bush {
   incrementBushCount() {
     this.bushCount += 1;
     this.saveBushCount();
-    UpdateInventorySlot(this.bushCount,'bush'); // Update the inventory slot
+    UpdateInventorySlot(this.bushCount, "bush"); // Update the inventory slot
   }
 
   saveBushCount() {
@@ -25,10 +30,8 @@ export class Bush {
   loadBushCount() {
     const storedCount = localStorage.getItem(BUSHES);
     this.bushCount = storedCount ? parseInt(storedCount, 10) : 0;
-    UpdateInventorySlot(this.bushCount,'bush'); // Update the inventory slot
+    UpdateInventorySlot(this.bushCount, "bush"); // Update the inventory slot
   }
-
-
 
   addBushes() {
     const totalCells = this.cells.length;

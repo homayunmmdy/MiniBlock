@@ -1,5 +1,5 @@
 import { BLOCK_SIZE } from "../../config/config";
-import { playSound } from "../sounds";
+import { playSound } from "../features/sounds";
 
 export class User {
   private blockElement: HTMLElement;

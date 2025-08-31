@@ -1,6 +1,11 @@
-import { BLOCK_SIZE, SHEEP, SHEEP_MOVE, SHEEP_SOUND } from "../../config/config";
-import { UpdateInventorySlot } from "../Inventoary";
-import { playSound } from "../sounds";
+import {
+  BLOCK_SIZE,
+  SHEEP,
+  SHEEP_MOVE,
+  SHEEP_SOUND,
+} from "../../config/config";
+import { UpdateInventorySlot } from "../features/Inventoary";
+import { playSound } from "../features/sounds";
 
 export class Sheep {
   private sheepElement: HTMLElement;
@@ -11,10 +16,7 @@ export class Sheep {
   private soundInterval: number | undefined;
   private static sheepKilledCount: number = 0; // Static counter for all sheep instances
 
-  constructor(
-    sheepElement: HTMLElement,
-    gridContainer: HTMLElement,
-  ) {
+  constructor(sheepElement: HTMLElement, gridContainer: HTMLElement) {
     this.sheepElement = sheepElement;
     this.gridContainer = gridContainer;
 
@@ -106,7 +108,7 @@ export class Sheep {
     localStorage.setItem(SHEEP, Sheep.sheepKilledCount.toString());
 
     // Update the inventory slot
-    UpdateInventorySlot(Sheep.sheepKilledCount, 'sheep');
+    UpdateInventorySlot(Sheep.sheepKilledCount, "sheep");
   }
 
   stopAllIntervals(): void {
@@ -129,6 +131,4 @@ export class Sheep {
     const storedCount = localStorage.getItem(SHEEP);
     Sheep.sheepKilledCount = storedCount ? parseInt(storedCount, 10) : 0;
   }
-
-
 }

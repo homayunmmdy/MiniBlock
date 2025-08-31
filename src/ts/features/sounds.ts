@@ -1,5 +1,5 @@
-import { SoundController } from "../ts/Controller/soundController.ts";
-import { SoundsFileType } from "../types/types";
+import { SoundsFileType } from "../../types/types.ts";
+import { SoundController } from "../Controller/soundController.ts";
 
 // Preloaded sounds
 const sounds: SoundsFileType = {
